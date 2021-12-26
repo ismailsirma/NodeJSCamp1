@@ -28,7 +28,7 @@ yargs.command({
 yargs.command({
     command : 'remove',
     describe: 'Remove a note',
-    buidler : {
+    builder : {
         title: {
             describe:'Note title',
             demandOption : true,  // make title required
@@ -42,7 +42,14 @@ yargs.command({
 yargs.command({
     command : 'read',
     describe: 'Reading a note',
-    handler: () => console.log('Reading a note')
+    builder : {
+        title: {
+            describe:'Note title',
+            demandOption : true,  // make title required
+            type: 'string' // force title to be string
+        }
+    },
+    handler: (argv) => notes.readNote(argv.title)
 })
 
 // Create list command

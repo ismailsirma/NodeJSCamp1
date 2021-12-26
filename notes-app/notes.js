@@ -10,9 +10,11 @@ const addNote = (title, body) => {
     const notes = loadNotes()
 
     // check if a duplicate title exists
-    const duplicateNotes = notes.filter(  (note) => note.title === title)
+    const duplicateNote = notes.find((note) => note.title === title)
 
-    if(duplicateNotes.length === 0){
+    // if there is no duplicate note then add the note
+    // duplicateNote === undefined // same thing
+    if(!duplicateNote){
         // insert each note as an object with title and body
         notes.push({
             title : title,
@@ -52,6 +54,24 @@ const listNotes = () => {
     })
 }
 
+const readNote = (title) => {
+    const notes = loadNotes()
+
+    // find the note from the notes array with specific title
+    const note = notes.find((note) => note.title === title)
+
+    // check if note is not undifined and has a value
+    if(note)
+    {
+        // print title and body separetely
+        console.log(chalk.inverse.green(note.title))
+        console.log(chalk.inverse.yellow(note.body))
+    } else {
+        console.log(chalk.inverse.red('Unable to find any note with the title: ' + title))
+    }
+
+}
+
 const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes)
     fs.writeFileSync('notes.json', dataJSON)
@@ -73,5 +93,6 @@ module.exports = {
     getNotes : getNotes,
     addNote : addNote,
     removeNotes : removeNotes,
-    listNotes : listNotes
+    listNotes : listNotes,
+    readNote : readNote
 }
