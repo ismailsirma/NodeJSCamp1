@@ -59,20 +59,25 @@ request({ url : geocodeURL, json: true}, (error, response) => {
 })
 
 
+const address = process.argv[2]
 
+if(!address){
+    console.log('Please provide an address')
+} else {    
+    geocode(address, (error, data)=> {
+        
+        if(error){
+            return console.log(error)
+        }
 
-geocode('Philadelphia', (error, data)=> {
-    console.log('Error', error)
-    console.log('Data', data)
-})
+        forecast(data.latitude, data.longitude, (error, forecastData) => {
 
-
-// Goal : Create a reusable function for getting the forecast
-// 1. Setup the forecast function in utils/forecast.js
-// 2. Require the function in app.js and call it as shown below
-// 3. Thre forecast function should have callback functions for errors and success cases
-
-forecast(-75.7088, 44.1545, (error, data) => {
-    console.log('Error', error)
-    console.log('Data', data)
-})
+            if(error){
+                return console.log(error)
+            }
+            
+            console.log(data.location)
+            console.log(forecastData)
+        })
+    })
+}
