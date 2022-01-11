@@ -1,4 +1,6 @@
 const request = require('request')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 //const url = 'https://api.binance.com/api/v3/exchangeInfo'
 
@@ -48,31 +50,29 @@ const geocodeURL = 'https://api.mapbox.com/geodcoding/v5/mapbox.places/Los%20Ang
 
 request({ url : geocodeURL, json: true}, (error, response) => {
     // Print Latitude and longtitude
-    const longtitude = response.body.features[0].center[0]
-    const latitude = response.body.features[0].center[1]
-    console.log("long:" + longtitude + ", lati:" + latitude)
+    if(response.body.features != undefined)
+    {
+        const longtitude = response.body.features[0].center[0]
+        const latitude = response.body.features[0].center[1]
+        console.log("long:" + longtitude + ", lati:" + latitude)
+    }
 })
 
 
-const geocode = (address, callback) => {
-    const url = 'https://api.mapbox.com/geodcoding/v5/mapbox.places/' + address + '.json?access_token=abcd123'
 
-    request({ url: url, json: true }, (error, response) => {
-        if(error){
-            callback('Unable to connect to location services!', undefined)
-        } else if(response.body.features.length === 0){
-            callback('Unable to find location. Try another search.', undefined)
-        } else {
-            callback(undefined, {
-                latitude: response.body.features[0].center[0],
-                longitude: response.body.features[0].center[1],
-                location: response.body.features[0].place_name
-            })
-        }
-    })
-}
 
 geocode('Philadelphia', (error, data)=> {
+    console.log('Error', error)
+    console.log('Data', data)
+})
+
+
+// Goal : Create a reusable function for getting the forecast
+// 1. Setup the forecast function in utils/forecast.js
+// 2. Require the function in app.js and call it as shown below
+// 3. Thre forecast function should have callback functions for errors and success cases
+
+forecast(-75.7088, 44.1545, (error, data) => {
     console.log('Error', error)
     console.log('Data', data)
 })
