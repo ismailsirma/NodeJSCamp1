@@ -14,6 +14,54 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     const db = client.db(databaseName)
 
+    //////////////////////////////////////////////////////////////////////
+    // Update a record aynchronously
+    db.collection('users').updateOne({
+        _id: new ObjectID("61e057f11c7584926df6610d")
+    }, {
+        // updated fields only
+        $set: {
+            name: 'Mike'
+        },
+        $inc: {
+            age: 1
+        }
+    }).then(() =>{
+        console.log(result)
+    }).catch(() => {
+        console.log(error)
+    })
+
+    // update many records
+    db.collection('tasks').updateMany({
+        completed: false
+    }, {
+        // updated fields only
+        $set: {
+            completed: true
+        }
+    }).then((result) =>{
+        console.log(result.modifiedCount)
+    }).catch(() => {
+        console.log(error)
+    })
+
+    /*
+    const updatePromise = db.collection('users').updateOne({
+        _id: new ObjectID("61e057f11c7584926df6610d")
+    }, {
+        $set: {
+            name: 'Mike'
+        }
+    })
+
+    updatePromise.then(() =>{
+        console.log(result)
+    }).catch(() => {
+        console.log(error)
+    })
+    */
+    //////////////////////////////////////////////////////////////////////
     // Search one record by criteria
     db.collection('users').findOne({ name: 'Ismail', surname: 'Sirma' }, (error, user) => {
         if(error){
@@ -41,7 +89,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     db.collection('users').find({ surname: 'Sirma' }).toArray((error, count) => {
         console.log(count)
     })
-
+    //////////////////////////////////////////////////////////////////////
     /*
     // first argument is object to be inserted
     // second argument is callback function to be called
