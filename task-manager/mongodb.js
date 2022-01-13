@@ -62,6 +62,15 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     })
     */
     //////////////////////////////////////////////////////////////////////
+    // Delete records by criteria
+    db.collection('users').deleteMany({
+        name: 'Mike'
+    }).then((result) => {
+        console.log(result.deletedCount)
+    }).catch((error) => {
+        console.log(error)
+    })
+    //////////////////////////////////////////////////////////////////////
     // Search one record by criteria
     db.collection('users').findOne({ name: 'Ismail', surname: 'Sirma' }, (error, user) => {
         if(error){
