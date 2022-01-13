@@ -7,22 +7,46 @@ const { MongoClient, ObjectID } = require('mongodb')
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
 
-const id = new ObjectID()
-console.log(id.id)
-console.log(id.getTimestamp())
-
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if(error){
         return console.log('unable to connect to database!')
     }
 
     const db = client.db(databaseName)
+
+    // Search one record by criteria
+    db.collection('users').findOne({ name: 'Ismail', surname: 'Sirma' }, (error, user) => {
+        if(error){
+            return console.log('Unable to fetch')
+        }
+
+        console.log(user)
+    })
+
+    // search one record by object Id
+    db.collection('users').findOne({ _id: new ObjectID("61e057f11c7584926df6610d") }, (error, user) => {
+        if(error){
+            return console.log('Unable to fetch')
+        }
+
+        console.log(user)
+    })
+
+    // search with criteria
+    db.collection('users').find({ surname: 'Sirma' }).toArray((error, users) => {
+        console.log(users)
+    })
+
+    // search with criteria and get count of records matching
+    db.collection('users').find({ surname: 'Sirma' }).toArray((error, count) => {
+        console.log(count)
+    })
+
+    /*
     // first argument is object to be inserted
     // second argument is callback function to be called
     // callback function to track error or result info
-    
     db.collection('users').insertOne({
-        _id: id,
         name: 'Ismail',
         surname: 'Sirma'
     }, (error, result) => {
@@ -33,7 +57,6 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
         console.log(result.insertedId)
     })
 
-    /*
    db.collection('users').insertMany([
        {
         name: 'Ismail',
