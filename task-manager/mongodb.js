@@ -1,8 +1,15 @@
-const mongodb = require('mongodb')
-const MongoClient = mongodb.MongoClient
+//const mongodb = require('mongodb')
+//const MongoClient = mongodb.MongoClient
+//const ObjectID = mongodb.ObjectId
+
+const { MongoClient, ObjectID } = require('mongodb')
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
+
+const id = new ObjectID()
+console.log(id.id)
+console.log(id.getTimestamp())
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if(error){
@@ -13,8 +20,9 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     // first argument is object to be inserted
     // second argument is callback function to be called
     // callback function to track error or result info
-    /*
+    
     db.collection('users').insertOne({
+        _id: id,
         name: 'Ismail',
         surname: 'Sirma'
     }, (error, result) => {
@@ -24,8 +32,8 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
         console.log(result.insertedId)
     })
-    */
 
+    /*
    db.collection('users').insertMany([
        {
         name: 'Ismail',
@@ -42,4 +50,5 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
        console.log(result.insertedIds)
    })
+   */
 })
