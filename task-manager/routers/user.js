@@ -1,9 +1,11 @@
 const express = require('express')
 const User = require('../models/user')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
 // creating a new user
-router.post('/users', async (req, res) => {
+// middleware function as second input
+router.post('/users', auth ,async (req, res) => {
     const user = new User(req.body)
 
     try{
@@ -25,14 +27,9 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.get('/users', async (req, res) => {
+router.get('/users/me', auth, async (req, res) => {
     
-    try{
-        const users = await User.find({})
-        res.send(users)
-    } catch(e) {
-        res.status(500).send(e)
-    }
+    res.send(req.user)
 })
 
 router.get('/users/:id', async (req, res) => {
