@@ -49,6 +49,16 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.methods.getPublicProfile = function(){
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
+
 // directly accessible method from the model
 // instance method ( accessible from instance )
 userSchema.methods.generateAuthToken = async function() {
