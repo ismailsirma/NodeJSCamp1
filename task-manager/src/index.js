@@ -1,29 +1,11 @@
-const express = require('express')
-require('./db/mongoose')
-const userRouter = require('./routers/user')
-
-const app = express()
+const app = require('./app')
 const port = process.env.PORT || 3000
-
-// middleware function
-/*
-app.use((req, res, next) => {
-    if(req.method === 'GET'){
-        res.send('GET requests are disabled')
-    } else {
-        next()
-    }
-    //console.log(req.method, req.path)
-})
-*/
-
-app.use(express.json())
-app.use(userRouter)
 
 app.listen(port, () => {
     console.log('Server is up on port '+ port)
 })
 
+//////////////////// code below is just a test ////////////////////////////////////
 const jwt = require('jsonwebtoken')
 
 // jwt sign
@@ -34,7 +16,7 @@ const myFunction = async () => {
     const token = jwt.sign({
         _id: 'abc123'
     }, 
-    'thisismynewpassword', 
+    'thisismysecret', 
     {
         expiresIn : '15 minutes'
     })
@@ -43,7 +25,7 @@ const myFunction = async () => {
     //verify the json token
     // first input is token, second is the secret password
     // it throws error if secret is not correct for the token
-    const data = jwt.verify(token, 'thisismynewpassword')
+    const data = jwt.verify(token, 'thisismysecret')
     console.log(data)
 }
 

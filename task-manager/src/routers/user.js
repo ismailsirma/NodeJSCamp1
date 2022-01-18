@@ -5,7 +5,7 @@ const router = new express.Router()
 
 // creating a new user
 // middleware function as second input
-router.post('/users', auth ,async (req, res) => {
+router.post('/users',  async (req, res) => {
     const user = new User(req.body)
 
     try{
