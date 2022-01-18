@@ -75,7 +75,7 @@ userSchema.methods.generateAuthToken = async function() {
 
 // static method is directly accessible method from the model
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await user.findOne({ email })
+    const user = await User.findOne({ email }).exec()
 
     if(!user){
         throw new Error('Unable to login')
