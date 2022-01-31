@@ -1,14 +1,20 @@
 const mongoose = require('mongoose')
+const redis = require('redis')
+const util = require('util')
 
-// Get reference to original default exec function defined inside mongoose library
+const redisUrl = 'redis://127.0.0.1:6379'
+const client = redis.createClient(redisUrl)
+client.get = util.promisify(client.get)
 const exec = mongoose.Query.prototype.exec
 
-// overwrite exec function with additional logic being applied
+// runs on every single query
+mongoose.Query.prototype.exec = function(){
+	
+	const key = JSON.stringify(
+            Object.assign({}, this.getQuery(), {
+            collection: this.mongooseCollection.name
+        })
+    )
 
- // we don't want to change value of exec so we didn’t use arrow function
-// Runs before any query is executed by mongoose
-mongoose.Query.prototype.exec = function (){
-	console.log('IM ABOUT TO RUN A QUERY')
-	// runs original copy of exec function (with any arguments that pass into exec)
 	return exec.apply(this, arguments)
 }
