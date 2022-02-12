@@ -45,3 +45,10 @@ mongoose.Query.prototype.exec = async function(){
     //console.log(result.validate)
     return result
 }
+
+module.exports = {
+    clearHash(hashKey){
+        // look into redis and delete all data related to a key
+        client.del(JSON.stringify(hashKey))
+    }
+}

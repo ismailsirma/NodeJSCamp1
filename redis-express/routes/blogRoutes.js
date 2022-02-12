@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
+const { clearHash } = require('../services/cache')
 
 const Blog = mongoose.model('Blog');
 
@@ -35,5 +36,8 @@ module.exports = app => {
     } catch (err) {
       res.send(400, err);
     }
+
+    // clear data associated with the user
+    clearHash(req.user.id)
   });
 };
