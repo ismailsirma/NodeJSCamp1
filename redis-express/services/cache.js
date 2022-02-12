@@ -28,7 +28,8 @@ mongoose.Query.prototype.exec = async function(){
 
 	const result = await exec.apply(this, arguments)
     // if key is not in redis, issue the query and store result in redis
-    client.set(key, JSON.stringify(result))
+    // Expiration time of 10 seconds for future sets
+    client.set(key, JSON.stringify(result), 'EX', 10)
 
     //console.log(result.validate)
     return result
